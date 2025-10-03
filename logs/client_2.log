@@ -1,0 +1,10 @@
+Conexão com o servidor 127.0.0.1 estabelecida com sucesso!
+Digite seu nome: Conectado! Digite suas mensagens. (0 para sair)
+[Tester_5]: Olá, esta é a mensagem do Tester 5.
+[Tester_4]: Olá, esta é a mensagem do Tester 4.
+[Tester_1]: Olá, esta é a mensagem do Tester 1.
+[Tester_3]: Olá, esta é a mensagem do Tester 3.
+>> Tester_4 saiu do chat.
+>> Tester_5 saiu do chat.
+Desconectando...
+Cliente encerrado com sucesso.

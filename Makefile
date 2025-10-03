@@ -1,47 +1,66 @@
-# Compilador
+MAKEFLAGS += --no-print-directory
+
+# Compilador C
 CC = gcc
-# Flags de compilação: -g (debug), -Wall (warnings), -Iinclude (procurar headers em include/)
-CFLAGS = -g -Wall -Iinclude
-# Flags de linkagem: -lpthread é essencial para usar pthreads
-LDFLAGS = -lpthread
 
-# Diretórios
-SRCDIR = src
-INCDIR = include
-BUILDDIR = build
-BINDIR = bin
+# --- Estrutura de Diretórios (Caminhos Relativos) ---
+BIN_DIR     := bin
+BUILD_DIR   := build
+SRC_DIR     := src
 
-# Fontes da lib
-LIB_SRC = $(SRCDIR)/lib/libtslog.c
-LIB_OBJ = $(BUILDDIR)/libtslog.o
+# Flags de compilação:
+# -Wall: Todos os avisos
+# -g: Informações de debug
+# -Iinclude: Usa o caminho relativo para a pasta de headers
+CFLAGS = -Wall -g -Iinclude
 
-# Fontes do teste
-TEST_SRC = $(SRCDIR)/tests/test_logger.c
-TEST_OBJ = $(BUILDDIR)/test_logger.o
-TEST_EXEC = $(BINDIR)/test_logger
+# Flags do linker: -pthread (para a biblioteca de threads)
+LDFLAGS = -pthread
 
-# Regra principal (padrão)
-all: $(TEST_EXEC)
 
-# Regra para criar o executável de teste
-$(TEST_EXEC): $(TEST_OBJ) $(LIB_OBJ)
-	@mkdir -p $(BINDIR)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
-	@echo "Executável de teste criado em $(TEST_EXEC)"
+# --- VPATH: Caminho de Busca para Arquivos Fonte ---
+VPATH = $(SRC_DIR)/lib:$(SRC_DIR)/server:$(SRC_DIR)/cliente:$(SRC_DIR)/tests
 
-# Regra para compilar o objeto de teste
-$(BUILDDIR)/test_logger.o: $(TEST_SRC) $(INCDIR)/libtslog.h
-	@mkdir -p $(BUILDDIR)
+# --- Definição dos Arquivos Objeto ---
+SERVER_OBJS      := $(addprefix $(BUILD_DIR)/, server.o main_server.o libtslog.o)
+CLIENT_OBJS      := $(addprefix $(BUILD_DIR)/, cliente.o main_cliente.o libtslog.o)
+
+# --- Definição dos Alvos (Executáveis) ---
+TARGET_SERVER    := $(BIN_DIR)/server
+TARGET_CLIENT    := $(BIN_DIR)/client
+
+.PHONY: all clean test
+
+# --- Regras Principais ---
+all: $(TARGET_SERVER) $(TARGET_CLIENT)
+
+# --- Regras de Linkagem ---
+$(TARGET_SERVER): $(SERVER_OBJS)
+	@echo "Linkando o executável do Servidor..."
+	@mkdir -p $(BIN_DIR)
+	$(CC) $(LDFLAGS) $(SERVER_OBJS) -o $@
+
+$(TARGET_CLIENT): $(CLIENT_OBJS)
+	@echo "Linkando o executável do Cliente..."
+	@mkdir -p $(BIN_DIR)
+	$(CC) $(LDFLAGS) $(CLIENT_OBJS) -o $@
+
+
+# --- Regra de Compilação Única ---
+$(BUILD_DIR)/%.o: %.c
+	@echo "Compilando $<..."
+	@mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Regra para compilar o objeto da lib
-$(BUILDDIR)/libtslog.o: $(LIB_SRC) $(INCDIR)/libtslog.h
-	@mkdir -p $(BUILDDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
 
-# Regra para limpar os arquivos compilados
+# --- Regra de Limpeza ---
 clean:
-	@echo "Limpando arquivos gerados..."
-	rm -rf $(BUILDDIR)/* $(BINDIR)/* app.log
+	@echo "Limpando diretórios bin/ e build/..."
+	@rm -rf $(BIN_DIR) $(BUILD_DIR)
 
-.PHONY: all clean
+# --- Regra de Teste com Script ---
+# Garante que o cliente está compilado e depois executa o script de teste.
+test: $(TARGET_CLIENT)
+	@echo "Executando script de teste em BASH..."
+	@chmod +x $(SRC_DIR)/tests/simulador.sh
+	@$(SRC_DIR)/tests/simulador.sh
