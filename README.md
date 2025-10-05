@@ -1,4 +1,4 @@
-# Servidor de Chat Multiusuário (TCP) - Etapa 2
+# Servidor de Chat Multiusuário (TCP)
 Aluna: Beatriz Montenegro Maia Chaves 
 
 Matrícula: 20230012233
@@ -13,7 +13,7 @@ Este projeto tem como objetivo tem como objetivo desenvolver um servidor TCP con
 O projeto está organizado nos seguintes diretórios:
 - **bin/**: Contém os arquivos executáveis após a compilação
 - **build/**: Contém os arquivos objeto (.o)
-- **docs/**: Guarda a documentação do projeto (diagramas e relatórios)
+- **docs/**: Guarda a documentação do projeto (diagrama, relatório do uso de IA e o relatório de mapeamento dos requisitos)
 - **include/**: Contém os arquivos de cabeçalho(.h) do projeto
 - **src/**: Contém todo o código-fonte (.c), subdividido em:
     - **lib/**: Implementação de bibliotecas auxiliares (`server.c`, `cliente.c`, `libtslog.c`)
@@ -34,25 +34,16 @@ O sistema de logging é um componente central e foi projetado para ser thread-sa
 - A biblioteca possui funções simples: `tslog_init()` para inicializar o log, `tslog_log()` para escrever a mensagem de log no arquivo e `tslog_destroy()` para finalizar o logger.
 
 ### Biblioteca de servidor (server.h)
-O servidor foi projetado para alta concorrência, utilizando pthreads para gerenciar múltiplos clientes de forma eficiente.
+O servidor foi projetado para alta concorrência, utilizando pthreads  e outros mecanismos de sincronização para gerenciar múltiplos clientes de forma eficiente.
 
 - **Modelo de Concorrência**: O servidor opera em um loop principal que aguarda novas conexões com accept(). Para cada cliente que se conecta, uma nova thread é criada com pthread_create() para lidar com toda a comunicação daquele cliente, permitindo que o loop principal continue disponível para aceitar novos clientes, sem bloqueios.
 
+- **Contole de conexões**:  Para controlar o número de clientes conectados simultaneamente, o servidor utiliza um semáforo (`sem_t`).
+
+- **Monitor para broadcast de mensagens**:  Para gerenciar o broadcast de mensagens foi implementado um monitor na forma de uma fila de mensagens global e thread-safe, que opera no modelo produtor-consumidor.
+
 - **Gerenciamento de Clientes**: O servidor mantém uma lista global de clientes conectados. O acesso a esta lista (para adicionar, remover ou enviar para broadcast) é protegido por um pthread_mutex_t, garantindo que as operações sejam atômicas e seguras em um ambiente multithread.
 
-**Ciclo de Vida da Thread do Cliente**  
-
-Cada thread (handle_client) gerencia o ciclo de vida completo de um cliente:
-
-1. Recebe o nome do cliente e o armazena.
-
-2. Adiciona o cliente à lista global (operação protegida por mutex).
-
-3. Anuncia a entrada do novo cliente para todos os outros via broadcast.
-
-4. Entra em um loop para receber as mensagens daquele cliente. Cada mensagem recebida é retransmitida para os demais.
-
-5. Se a conexão for encerrada, a thread remove o cliente da lista global (operação protegida por mutex), anuncia sua saída via broadcast e libera os recursos alocados.
 
 ### Biblioteca do cliente (cliente.h)
 O cliente foi projetado com uma arquitetura multithread para oferecer uma experiência de uso contínua, responsiva e sem bloqueios.
@@ -115,3 +106,8 @@ make test
 ```   
 
 O script será executado, e o output de cada cliente simulado será salvo em arquivos individuais dentro do diretório logs/.
+
+### Vídeo demonstrativo
+O link a seguir mostra como compilar, rodar o projeto e também faz uma demonstração tanto realizando a a conexão dos clientes por meio de diversos termineis, quanto também por meio do script de testepara fazer essa simulação.
+
+Link: https://drive.google.com/file/d/1qpSIBryFonRTxaPSU3W3wNRL-FlT8Dxn/view?usp=sharing

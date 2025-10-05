@@ -1,17 +1,17 @@
-[2025-10-03 15:43:19] [INFO] - Iniciando o servidor...
-[2025-10-03 15:43:19] [INFO] - Servidor escutando na porta 8080
-[2025-10-03 15:43:28] [INFO] - Cliente 'Tester_4' conectado de 127.0.0.1:50706.
-[2025-10-03 15:43:28] [INFO] - Cliente 'Tester_5' conectado de 127.0.0.1:50692.
-[2025-10-03 15:43:28] [INFO] - Cliente 'Tester_3' conectado de 127.0.0.1:50716.
-[2025-10-03 15:43:28] [INFO] - Cliente 'Tester_1' conectado de 127.0.0.1:50728.
-[2025-10-03 15:43:28] [INFO] - Cliente 'Tester_2' conectado de 127.0.0.1:50702.
-[2025-10-03 15:43:29] [INFO] - [Tester_5]: Olá, esta é a mensagem do Tester 5.
-[2025-10-03 15:43:29] [INFO] - [Tester_4]: Olá, esta é a mensagem do Tester 4.
-[2025-10-03 15:43:29] [INFO] - [Tester_2]: Olá, esta é a mensagem do Tester 2.
-[2025-10-03 15:43:29] [INFO] - [Tester_1]: Olá, esta é a mensagem do Tester 1.
-[2025-10-03 15:43:29] [INFO] - [Tester_3]: Olá, esta é a mensagem do Tester 3.
-[2025-10-03 15:43:30] [INFO] - Cliente 'Tester_4' desconectado.
-[2025-10-03 15:43:30] [INFO] - Cliente 'Tester_5' desconectado.
-[2025-10-03 15:43:30] [INFO] - Cliente 'Tester_2' desconectado.
-[2025-10-03 15:43:30] [INFO] - Cliente 'Tester_1' desconectado.
-[2025-10-03 15:43:30] [INFO] - Cliente 'Tester_3' desconectado.
+[2025-10-05 15:55:14] [INFO] - Iniciando o servidor...
+[2025-10-05 15:55:14] [INFO] - Servidor escutando na porta 8080
+[2025-10-05 15:55:23] [INFO] - Cliente 'Tester_2' conectado de 127.0.0.1:35738.
+[2025-10-05 15:55:23] [INFO] - Cliente 'Tester_5' conectado de 127.0.0.1:35730.
+[2025-10-05 15:55:23] [INFO] - Cliente 'Tester_4' conectado de 127.0.0.1:35742.
+[2025-10-05 15:55:23] [INFO] - Cliente 'Tester_1' conectado de 127.0.0.1:35760.
+[2025-10-05 15:55:23] [INFO] - Cliente 'Tester_3' conectado de 127.0.0.1:35744.
+[2025-10-05 15:55:24] [INFO] - [Tester_1]: Olá, esta é a mensagem do Tester 1.
+[2025-10-05 15:55:24] [INFO] - [Tester_3]: Olá, esta é a mensagem do Tester 3.
+[2025-10-05 15:55:24] [INFO] - [Tester_4]: Olá, esta é a mensagem do Tester 4.
+[2025-10-05 15:55:24] [INFO] - [Tester_2]: Olá, esta é a mensagem do Tester 2.
+[2025-10-05 15:55:24] [INFO] - [Tester_5]: Olá, esta é a mensagem do Tester 5.
+[2025-10-05 15:55:25] [INFO] - Cliente 'Tester_3' desconectado.
+[2025-10-05 15:55:25] [INFO] - Cliente 'Tester_1' desconectado.
+[2025-10-05 15:55:25] [INFO] - Cliente 'Tester_4' desconectado.
+[2025-10-05 15:55:25] [INFO] - Cliente 'Tester_2' desconectado.
+[2025-10-05 15:55:25] [INFO] - Cliente 'Tester_5' desconectado.

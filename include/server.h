@@ -3,7 +3,10 @@
 
 #include <pthread.h>
 #include <netinet/in.h>
+#include <semaphore.h> 
 #include "common.h"
+
+#define QUEUE_SIZE 50
 
 // struct para representar um cliente conectado
 typedef struct {
@@ -13,6 +16,53 @@ typedef struct {
   int is_active; // flag para indicar se o cliente ta ativo
 } client;
 
+// struct para as mensagens
+typedef struct {
+  char content[BUFFER_SIZE + NAME_SIZE + 4];
+  int sender_socket;
+} message_t;
+
+// struct do monitor (fila thread-safe)
+typedef struct {
+  message_t buffer[QUEUE_SIZE];
+  int head, tail, count;
+  pthread_mutex_t mutex;
+  pthread_cond_t not_empty; // variavel conticional para sinalizar se a fila ta vazia ou não
+} message_queue_t;
+
+
+// -- FUNÇÕES PARA CONTROLAR A FILA DE MENSAGENS (MONITOR)
+
+/*
+  - função para inicializar a fila de mensagens
+  - Parâmetros:
+    - q: ponteiro para a struct message_queue
+*/
+void queue_init(message_queue_t *q);
+
+/*
+  - função para adicionar uma mensagem à fila
+  - Parâmetros:
+    - q: ponteiro para a struct message_queue
+    - msg: ponteiro para struct message
+*/
+void queue_push(message_queue_t *q, message_t msg);
+
+/*
+  - função para remover uma mensagem à fila
+  - Parâmetros:
+    - q: ponteiro para a struct message_queue
+*/
+message_t queue_pop(message_queue_t *q);
+
+
+/*
+  - função para thread consumidora que faz o broadcast
+*/
+void *broadcast_thread(void *arg);
+
+
+// FUNÇÕES DO SERVIDOR
 
 /*
   - Inicia o servidor
@@ -23,7 +73,7 @@ void server_start();
   - função executada por cada thread para lidar com um cliente
   - recebe mensagens do cliente e inicia o broadcast
   - Parâmetros:
-    - arg: ponteiro para a struct cliente
+    - cliente: ponteiro para a struct cliente
 */
 void *handle_client(void *cliente);
 
